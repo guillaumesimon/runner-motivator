@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { createSession } from '../lib/db'
 
 export default function Session() {
   const router = useRouter()
@@ -11,11 +12,15 @@ export default function Session() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Here you would typically send this data to your backend API
-    // For now, we'll just simulate it and redirect to the result page
-    const sessionData = { distance, targetPace, comment }
-    localStorage.setItem('currentSession', JSON.stringify(sessionData))
-    router.push('/result')
+    try {
+      // For now, we'll use a hardcoded user ID. In a real app, you'd get this from authentication.
+      const userId = 1 // Assuming the first user has ID 1
+      const sessionId = await createSession(userId, parseFloat(distance), targetPace, comment)
+      router.push(`/result/${sessionId}`)
+    } catch (error) {
+      console.error('Error saving session:', error)
+      // Handle error (e.g., show error message to user)
+    }
   }
 
   return (
