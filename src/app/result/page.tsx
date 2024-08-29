@@ -1,28 +1,27 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 
-export default function Result() {
+const Result: React.FC = () => {
   const [coachingSpeech, setCoachingSpeech] = useState('')
 
   useEffect(() => {
-    // In a real application, you would call your backend API here
-    // to generate the coaching speech using Claude 3.5 Sonnet
-    // For now, we'll just simulate it with a placeholder
     const generateCoachingSpeech = async () => {
-      const sessionData = JSON.parse(localStorage.getItem('currentSession') || '{}')
-      
-      // Simulated API call
-      const speech = `
-        [0:00] Great job setting up your ${sessionData.distance}km run!
-        [0:30] Remember, we're aiming for a pace of ${sessionData.targetPace} min/km.
-        [2:00] Keep up the good work! You're doing great.
-        [5:00] Halfway there! Maintain your pace.
-        [8:00] Final push! You've got this!
-        [9:30] Excellent work! Cool down and stretch.
-      `
-      
-      setCoachingSpeech(speech)
+      if (typeof window !== 'undefined') {
+        const sessionData = JSON.parse(localStorage.getItem('currentSession') || '{}')
+        
+        // Simulated API call
+        const speech = `
+          [0:00] Great job setting up your ${sessionData.distance}km run!
+          [0:30] Remember, we're aiming for a pace of ${sessionData.targetPace} min/km.
+          [2:00] Keep up the good work! You're doing great.
+          [5:00] Halfway there! Maintain your pace.
+          [8:00] Final push! You've got this!
+          [9:30] Excellent work! Cool down and stretch.
+        `
+        
+        setCoachingSpeech(speech)
+      }
     }
 
     generateCoachingSpeech()
@@ -34,7 +33,8 @@ export default function Result() {
       <div className="w-full max-w-2xl bg-gray-100 p-6 rounded-lg">
         <pre className="whitespace-pre-wrap">{coachingSpeech}</pre>
       </div>
-      {/* Add audio player component here when implemented */}
     </div>
   )
 }
+
+export default Result
